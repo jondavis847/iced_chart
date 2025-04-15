@@ -19,7 +19,7 @@ impl Example {
     }
 
     fn view(&self) -> Element<Message> {
-        let plot = Plot::new(iced::widget::text("Plot Content").into())
+        let plot = Plot::new()
             .width(Length::Fill)
             .height(Length::Fill)
             .padding(Padding::from(10))

@@ -12,8 +12,7 @@ use iced::{
 };
 
 use crate::axes::Axes;
-pub struct Plot<'a, Message, Theme, Renderer> {
-    content: Element<'a, Message, Theme, Renderer>,
+pub struct Plot {
     width: Length,
     height: Length,
     padding: Padding,
@@ -21,10 +20,9 @@ pub struct Plot<'a, Message, Theme, Renderer> {
     axes: HashMap<Id, Axes>,
 }
 
-impl<'a, Message, Theme, Renderer> Plot<'a, Message, Theme, Renderer> {
-    pub fn new(content: Element<'a, Message, Theme, Renderer>) -> Self {
+impl Plot {
+    pub fn new() -> Self {
         Self {
-            content,
             width: Length::Fill,
             height: Length::Fill,
             padding: Padding::ZERO,
@@ -54,8 +52,7 @@ impl<'a, Message, Theme, Renderer> Plot<'a, Message, Theme, Renderer> {
     }
 }
 
-impl<'a, Message, Theme, Renderer> Widget<Message, Theme, Renderer>
-    for Plot<'a, Message, Theme, Renderer>
+impl<'a, Message, Theme, Renderer> Widget<Message, Theme, Renderer> for Plot
 where
     Renderer: iced::advanced::Renderer,
 {
@@ -92,14 +89,13 @@ where
     }
 }
 
-impl<'a, Message, Theme, Renderer> From<Plot<'a, Message, Theme, Renderer>>
-    for Element<'a, Message, Theme, Renderer>
+impl<'a, Message, Theme, Renderer> From<Plot> for Element<'a, Message, Theme, Renderer>
 where
     Message: 'a,
     Theme: 'a,
     Renderer: 'a + iced::advanced::Renderer,
 {
-    fn from(plot: Plot<'a, Message, Theme, Renderer>) -> Self {
+    fn from(plot: Plot) -> Self {
         Element::new(plot)
     }
 }
