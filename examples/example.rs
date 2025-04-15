@@ -6,19 +6,12 @@ enum Message {
     ChangeTheme,
 }
 
-#[derive(Default)]
-struct Example {}
+struct Example {
+    plot: Plot,
+}
 
-impl Example {
-    fn update(&mut self, message: Message) {
-        match message {
-            Message::ChangeTheme => {
-                // Change the theme of the plot
-            }
-        }
-    }
-
-    fn view(&self) -> Element<Message> {
+impl Default for Example {
+    fn default() -> Self {
         let mut plot = Plot::new()
             .with_width(Length::Fill)
             .with_height(Length::Fill)
@@ -52,7 +45,20 @@ impl Example {
                 .with_background(Color::from_rgb(0.1, 0.1, 0.1).into())
                 .with_border(axes_border),
         );
-        Element::from(plot)
+        Self { plot }
+    }
+}
+impl Example {
+    fn update(&mut self, message: Message) {
+        match message {
+            Message::ChangeTheme => {
+                // Change the theme of the plot
+            }
+        }
+    }
+
+    fn view(&self) -> Element<Message> {
+        self.plot.canvas
     }
 }
 
