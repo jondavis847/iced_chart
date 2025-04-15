@@ -20,14 +20,31 @@ impl Example {
 
     fn view(&self) -> Element<Message> {
         let mut plot = Plot::new()
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .padding(Padding::from(10))
-            .background(Color::from_rgb(0.05, 0.05, 0.05));
-        plot.add_axes(Axes::new(0, 0).with_background_color(Color::from_rgb(0.9, 0.1, 0.1)));
-        plot.add_axes(Axes::new(0, 1).with_background_color(Color::from_rgb(0.1, 0.9, 0.1)));
-        plot.add_axes(Axes::new(1, 0).with_background_color(Color::from_rgb(0.1, 0.1, 0.9)));
-        plot.add_axes(Axes::new(1, 1).with_background_color(Color::from_rgb(0.9, 0.9, 0.9)));
+            .with_width(Length::Fill)
+            .with_height(Length::Fill)
+            .with_padding(Padding::from(10))
+            .with_background_color(Color::from_rgb(0.05, 0.05, 0.05))
+            .with_border_color(Color::from_rgb(0.2, 0.2, 0.2));
+        plot.add_axes(
+            Axes::new(0, 0)
+                .with_background_color(Color::from_rgb(0.1, 0.1, 0.1))
+                .with_border_color(Color::from_rgb(0.2, 0.2, 0.2)),
+        );
+        plot.add_axes(
+            Axes::new(0, 1)
+                .with_background_color(Color::from_rgb(0.1, 0.1, 0.1))
+                .with_border_color(Color::from_rgb(0.2, 0.2, 0.2)),
+        );
+        plot.add_axes(
+            Axes::new(1, 0)
+                .with_background_color(Color::from_rgb(0.1, 0.1, 0.1))
+                .with_border_color(Color::from_rgb(0.2, 0.2, 0.2)),
+        );
+        plot.add_axes(
+            Axes::new(1, 1)
+                .with_background_color(Color::from_rgb(0.1, 0.1, 0.1))
+                .with_border_color(Color::from_rgb(0.2, 0.2, 0.2)),
+        );
         Element::from(plot)
     }
 }

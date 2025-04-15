@@ -16,8 +16,8 @@ pub struct Plot {
     width: Length,
     height: Length,
     padding: Padding,
-    background: Color,
-    border: Color,
+    background_color: Color,
+    border_color: Color,
     axes: HashMap<Id, Axes>,
 }
 
@@ -27,40 +27,39 @@ impl Plot {
             width: Length::Fill,
             height: Length::Fill,
             padding: Padding::ZERO,
-            background: Color::WHITE,
-            border: Color::BLACK,
+            background_color: Color::WHITE,
+            border_color: Color::BLACK,
             axes: HashMap::new(),
         }
     }
 
-    pub fn width(mut self, width: Length) -> Self {
+    pub fn with_width(mut self, width: Length) -> Self {
         self.width = width;
         self
     }
 
-    pub fn height(mut self, height: Length) -> Self {
+    pub fn with_height(mut self, height: Length) -> Self {
         self.height = height;
         self
     }
 
-    pub fn padding(mut self, padding: Padding) -> Self {
+    pub fn with_padding(mut self, padding: Padding) -> Self {
         self.padding = padding;
         self
     }
 
-    pub fn background(mut self, background: Color) -> Self {
-        self.background = background;
+    pub fn with_background_color(mut self, color: Color) -> Self {
+        self.background_color = color;
+        self
+    }
+
+    pub fn with_border_color(mut self, color: Color) -> Self {
+        self.border_color = color;
         self
     }
 
     pub fn add_axes(&mut self, axes: Axes) {
-        // if self.axes.iter().any(|(_, stored_axes)| {
-        //     stored_axes.row == axes.row && stored_axes.column == axes.column
-        // }) {
-        //     return Err(PlotErrors::AxesLocationTaken);
-        // }
         self.axes.insert(axes.id.clone(), axes);
-        // Ok(())
     }
 }
 
@@ -96,7 +95,7 @@ where
                 bounds: layout.bounds(),
                 ..renderer::Quad::default()
             },
-            self.background,
+            self.background_color,
         );
 
         // Calculate cell size based on the number of rows and columns
