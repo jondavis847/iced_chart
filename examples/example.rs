@@ -1,5 +1,5 @@
 use iced::{Color, Element, Length, Padding};
-use iced_chart::plot::Plot;
+use iced_chart::{axes::Axes, plot::Plot};
 
 #[derive(Debug)]
 enum Message {
@@ -19,13 +19,16 @@ impl Example {
     }
 
     fn view(&self) -> Element<Message> {
-        let plot = Plot::new()
+        let mut plot = Plot::new()
             .width(Length::Fill)
             .height(Length::Fill)
             .padding(Padding::from(10))
-            .background(Color::from_rgb(0.1, 0.1, 0.1));
-
-        Element::new(plot)
+            .background(Color::from_rgb(0.05, 0.05, 0.05));
+        plot.add_axes(Axes::new(0, 0).with_background_color(Color::from_rgb(0.9, 0.1, 0.1)));
+        plot.add_axes(Axes::new(0, 1).with_background_color(Color::from_rgb(0.1, 0.9, 0.1)));
+        plot.add_axes(Axes::new(1, 0).with_background_color(Color::from_rgb(0.1, 0.1, 0.9)));
+        plot.add_axes(Axes::new(1, 1).with_background_color(Color::from_rgb(0.9, 0.9, 0.9)));
+        Element::from(plot)
     }
 }
 
