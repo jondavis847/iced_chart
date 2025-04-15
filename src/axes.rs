@@ -1,6 +1,6 @@
 use crate::{axis::Axis, grid::Grid, legend::Legend};
 use iced::{
-    Border, Color, Padding, Rectangle,
+    Background, Border, Color, Padding, Rectangle,
     advanced::{
         renderer::{self, Quad},
         widget::Id,
@@ -10,8 +10,8 @@ use iced::{
 pub struct Axes {
     pub id: Id,
     axis: Axis,
-    background_color: Color,
-    border_color: Color,
+    background: Background,
+    border: Border,
     grid: Grid,
     legend: Legend,
     pub padding: Padding,
@@ -23,9 +23,9 @@ impl Axes {
     pub fn new(row: usize, column: usize) -> Self {
         Self {
             id: Id::unique(),
-            axis: Axis::new(),
-            background_color: Color::WHITE,
-            border_color: Color::BLACK,
+            axis: Axis::default(),
+            background: Background::from(Color::WHITE),
+            border: Border::default(),
             grid: Grid::new(),
             legend: Legend::new(),
             padding: Padding::from(10),
@@ -34,12 +34,12 @@ impl Axes {
         }
     }
 
-    pub fn with_background_color(mut self, color: Color) -> Self {
-        self.background_color = color;
+    pub fn with_background(mut self, background: Background) -> Self {
+        self.background = background;
         self
     }
-    pub fn with_border_color(mut self, color: Color) -> Self {
-        self.border_color = color;
+    pub fn with_border(mut self, border: Border) -> Self {
+        self.border = border;
         self
     }
 
@@ -50,14 +50,10 @@ impl Axes {
         renderer.fill_quad(
             Quad {
                 bounds,
-                border: Border {
-                    color: self.border_color,
-                    width: 1.0,
-                    radius: 0.0.into(),
-                },
+                border: self.border,
                 shadow: Default::default(),
             },
-            self.background_color,
+            self.background,
         );
     }
 }
