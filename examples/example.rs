@@ -1,6 +1,7 @@
-use iced::Element;
+use iced::{Color, Element, Length, Padding};
 use iced_chart::plot::Plot;
 
+#[derive(Debug)]
 enum Message {
     ChangeTheme,
 }
@@ -18,20 +19,13 @@ impl Example {
     }
 
     fn view(&self) -> Element<Message> {
-        // Create a plot with the current theme
-        let plot = Plot {
-            size: Size::new(400.0, 300.0),
-            width: 400.0,
-            height: 300.0,
-            background: Color::from_rgb(0.1, 0.1, 0.1),
-        };
-
-        iced::widget::container(plot)
+        let plot = Plot::new(iced::widget::text("Plot Content").into())
             .width(Length::Fill)
             .height(Length::Fill)
-            .padding(10)
-            .border_radius(5)
-            .style(border::Style::Solid)
+            .padding(Padding::from(10))
+            .background(Color::from_rgb(0.1, 0.1, 0.1));
+
+        Element::new(plot)
     }
 }
 

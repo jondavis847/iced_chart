@@ -1,27 +1,63 @@
-use std::sync::Arc;
+use std::collections::HashMap;
 
 use iced::{
-    Border, Color, Element, Length, Padding, Rectangle, Size,
+    Color, Element, Length, Padding, Rectangle, Size,
     advanced::{
         Layout, Widget,
-        layout::{self, Limits, Node},
+        layout::{Limits, Node},
         renderer::{self, Quad, Style},
-        widget::Tree,
+        widget::{Id, Tree},
     },
-    border,
     mouse::Cursor,
 };
-pub struct Plot<'a, Message, Renderer> {
-    content: Element<'a, Message, Renderer>,
+
+use crate::axes::Axes;
+pub struct Plot<'a, Message, Theme, Renderer> {
+    content: Element<'a, Message, Theme, Renderer>,
     width: Length,
     height: Length,
     padding: Padding,
     background: Color,
+    axes: HashMap<Id, Axes>,
 }
 
-impl<'a, Message, Theme, Renderer> Widget<Message, Theme, Renderer> for Plot<'a, Message, Renderer>
+impl<'a, Message, Theme, Renderer> Plot<'a, Message, Theme, Renderer> {
+    pub fn new(content: Element<'a, Message, Theme, Renderer>) -> Self {
+        Self {
+            content,
+            width: Length::Fill,
+            height: Length::Fill,
+            padding: Padding::ZERO,
+            background: Color::WHITE,
+            axes: HashMap::new(),
+        }
+    }
+
+    pub fn width(mut self, width: Length) -> Self {
+        self.width = width;
+        self
+    }
+
+    pub fn height(mut self, height: Length) -> Self {
+        self.height = height;
+        self
+    }
+
+    pub fn padding(mut self, padding: Padding) -> Self {
+        self.padding = padding;
+        self
+    }
+
+    pub fn background(mut self, background: Color) -> Self {
+        self.background = background;
+        self
+    }
+}
+
+impl<'a, Message, Theme, Renderer> Widget<Message, Theme, Renderer>
+    for Plot<'a, Message, Theme, Renderer>
 where
-    Renderer: iced::advanced::renderer::Renderer,
+    Renderer: iced::advanced::Renderer,
 {
     fn size(&self) -> Size<Length> {
         Size {
@@ -30,12 +66,10 @@ where
         }
     }
 
-    fn layout(&self, tree: &mut Tree, renderer: &Renderer, limits: &Limits) -> Node {
-        layout::padded(limits, self.width, self.height, self.padding, |limits| {
-            self.content
-                .as_widget()
-                .layout(&mut tree.children[0], renderer, limits)
-        })
+    fn layout(&self, _tree: &mut Tree, _renderer: &Renderer, limits: &Limits) -> Node {
+        let size = limits.resolve(self.width, self.height, Size::ZERO);
+
+        Node::new(size)
     }
 
     fn draw(
@@ -55,5 +89,17 @@ where
             },
             self.background,
         )
+    }
+}
+
+impl<'a, Message, Theme, Renderer> From<Plot<'a, Message, Theme, Renderer>>
+    for Element<'a, Message, Theme, Renderer>
+where
+    Message: 'a,
+    Theme: 'a,
+    Renderer: 'a + iced::advanced::Renderer,
+{
+    fn from(plot: Plot<'a, Message, Theme, Renderer>) -> Self {
+        Element::new(plot)
     }
 }
